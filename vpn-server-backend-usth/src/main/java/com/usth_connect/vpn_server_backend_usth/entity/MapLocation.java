@@ -14,15 +14,17 @@ public class MapLocation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "Location", unique = true)
+    @Column(name = "Location", unique = true, nullable = true , columnDefinition = "VARCHAR(255) DEFAULT 'No Location Provided'")
     private String location;
 
+    @Column(name = "location_value", nullable = true)
+    private String locationValue;
+
     @OneToMany(mappedBy = "location")
-    @JsonBackReference // Prevent circular reference in the reverse relationship
+    @JsonBackReference
     private List<Event> events;
 
     // Getters and Setters
-
     public Integer getId() {
         return id;
     }
@@ -37,6 +39,15 @@ public class MapLocation {
 
     public void setLocation(String location) {
         this.location = location;
+        this.locationValue = this.location;
+    }
+
+    public String getLocationValue() {
+        return locationValue;
+    }
+
+    public void setLocationValue(String locationValue) {
+        this.locationValue = locationValue != null ? locationValue.trim() : "No Location Provided";
     }
 
     public List<Event> getEvents() {
@@ -45,5 +56,9 @@ public class MapLocation {
 
     public void setEvents(List<Event> events) {
         this.events = events;
+    }
+    @Override
+    public String toString() {
+        return location != null ? location : "No Location Provided";
     }
 }

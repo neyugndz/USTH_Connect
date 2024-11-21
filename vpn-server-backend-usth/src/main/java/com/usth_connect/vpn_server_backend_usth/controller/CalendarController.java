@@ -80,7 +80,7 @@ public class CalendarController {
             }
 
             // Notify users of event changes
-            eventNotificationService.notifyUserOnEventChange(events);
+            //eventNotificationService.notifyUserOnEventChange(events);
             // Prepare the response map
             response.put("message", "Events fetched and saved successfully!");
             response.put("totalEventsFetched", events.size());

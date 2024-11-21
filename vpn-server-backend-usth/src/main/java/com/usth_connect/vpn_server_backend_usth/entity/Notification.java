@@ -1,6 +1,6 @@
 package com.usth_connect.vpn_server_backend_usth.entity;
 
-import com.usth_connect.vpn_server_backend_usth.entity.schedule.EventNotification;
+import com.usth_connect.vpn_server_backend_usth.entity.schedule.Event;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
@@ -12,10 +12,10 @@ public class Notification {
     private Integer notificationId;
 
     @ManyToOne
-    @JoinColumn(name = "Student_ID", referencedColumnName = "ID")
-    private Student student;
+    @JoinColumn(name = "event_id", referencedColumnName = "eventId")
+    private Event event;
 
-    @Column(name = "Message")
+    @Column(name = "Message", columnDefinition = "TEXT")
     private String message;
 
     @Column(name = "Created_At", nullable = false)
@@ -23,9 +23,6 @@ public class Notification {
 
     @Column(name = "Is_Read", nullable = false)
     private Boolean isRead = false;
-
-    @OneToOne(mappedBy = "notification")
-    private EventNotification eventNotification;
 
     public Integer getNotificationId() {
         return notificationId;
@@ -35,12 +32,12 @@ public class Notification {
         this.notificationId = notificationId;
     }
 
-    public Student getStudent() {
-        return student;
+    public Event getEvent() {
+        return event;
     }
 
-    public void setStudent(Student student) {
-        this.student = student;
+    public void setEvent(Event event) {
+        this.event = event;
     }
 
     public String getMessage() {
@@ -65,13 +62,5 @@ public class Notification {
 
     public void setRead(Boolean read) {
         isRead = read;
-    }
-
-    public EventNotification getEventNotification() {
-        return eventNotification;
-    }
-
-    public void setEventNotification(EventNotification eventNotification) {
-        this.eventNotification = eventNotification;
     }
 }

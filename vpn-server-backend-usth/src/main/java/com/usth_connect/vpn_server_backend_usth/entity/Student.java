@@ -42,9 +42,6 @@ public class Student implements UserDetails {
     private StudyYear studyYear;
 
     @OneToMany(mappedBy = "student")
-    private List<Notification> notifications;
-
-    @OneToMany(mappedBy = "student")
     private List<VpnSession> vpnSessions;
 
     @OneToOne(mappedBy = "student")
@@ -106,14 +103,6 @@ public class Student implements UserDetails {
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
-    }
-
-    public List<Notification> getNotifications() {
-        return notifications;
-    }
-
-    public void setNotifications(List<Notification> notifications) {
-        this.notifications = notifications;
     }
 
     public List<VpnSession> getVpnSessions() {

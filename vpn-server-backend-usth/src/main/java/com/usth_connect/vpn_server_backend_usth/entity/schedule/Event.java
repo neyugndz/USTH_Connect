@@ -1,5 +1,6 @@
 package com.usth_connect.vpn_server_backend_usth.entity.schedule;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.usth_connect.vpn_server_backend_usth.entity.Notification;
 import com.usth_connect.vpn_server_backend_usth.entity.Organizer;
 import com.usth_connect.vpn_server_backend_usth.entity.MapLocation;
 import com.usth_connect.vpn_server_backend_usth.entity.vpn.VpnEventSession;
@@ -7,6 +8,7 @@ import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "events")
@@ -30,6 +32,9 @@ public class Event {
     @Column(name = "Google_Event_Id", unique = true)
     private String googleEventId;
 
+    @Column(name = "location_value")
+    private String locationValue;
+
     @ManyToOne
     @JoinColumn(name = "Location", referencedColumnName = "Location")
     @JsonIgnore
@@ -39,8 +44,8 @@ public class Event {
     @JoinColumn(name = "Organizer_ID", referencedColumnName = "id")
     private Organizer organizer;
 
-    @OneToMany(mappedBy = "event")
-    private List<EventNotification> eventNotifications;
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    private Set<Notification> notifications;
 
     @OneToMany(mappedBy = "event")
     private List<VpnEventSession> vpnEventSessions;
@@ -93,6 +98,18 @@ public class Event {
         this.googleEventId = googleEventId;
     }
 
+    public String getLocationValue() {
+        return locationValue;
+    }
+
+    public void setLocationValue(String locationValue) {
+        if (locationValue == null || locationValue.trim().isEmpty()) {
+            this.locationValue = "No Location Provided";
+        } else {
+            this.locationValue = locationValue.trim();
+        }
+    }
+
     public MapLocation getLocation() {
         return location;
     }
@@ -109,12 +126,23 @@ public class Event {
         this.organizer = organizer;
     }
 
-    public List<EventNotification> getEventNotifications() {
-        return eventNotifications;
+    public Set<Notification> getNotifications() {
+        return notifications;
     }
 
-    public void setEventNotifications(List<EventNotification> eventNotifications) {
-        this.eventNotifications = eventNotifications;
+    public void setNotifications(Set<Notification> notifications) {
+        this.notifications = notifications;
+    }
+
+    // Add/remove helpers for the relationship
+    public void addNotification(Notification notification) {
+        this.notifications.add(notification);
+        notification.setEvent(this); // Maintain the relationship consistency
+    }
+
+    public void removeNotification(Notification notification) {
+        this.notifications.remove(notification);
+        notification.setEvent(null); // Nullify the relationship
     }
 
     public List<VpnEventSession> getVpnEventSessions() {
