@@ -3,7 +3,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.usth_connect.vpn_server_backend_usth.entity.Notification;
 import com.usth_connect.vpn_server_backend_usth.entity.Organizer;
 import com.usth_connect.vpn_server_backend_usth.entity.MapLocation;
-import com.usth_connect.vpn_server_backend_usth.entity.vpn.VpnEventSession;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -46,9 +45,6 @@ public class Event {
 
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private Set<Notification> notifications;
-
-    @OneToMany(mappedBy = "event")
-    private List<VpnEventSession> vpnEventSessions;
 
     public Integer getEventId() {
         return eventId;
@@ -143,13 +139,5 @@ public class Event {
     public void removeNotification(Notification notification) {
         this.notifications.remove(notification);
         notification.setEvent(null); // Nullify the relationship
-    }
-
-    public List<VpnEventSession> getVpnEventSessions() {
-        return vpnEventSessions;
-    }
-
-    public void setVpnEventSessions(List<VpnEventSession> vpnEventSessions) {
-        this.vpnEventSessions = vpnEventSessions;
     }
 }

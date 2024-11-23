@@ -4,7 +4,6 @@ import com.usth_connect.vpn_server_backend_usth.Enum.Gender;
 import com.usth_connect.vpn_server_backend_usth.Enum.Role;
 import com.usth_connect.vpn_server_backend_usth.Enum.StudyYear;
 import com.usth_connect.vpn_server_backend_usth.entity.studyBuddy.StudyBuddy;
-import com.usth_connect.vpn_server_backend_usth.entity.vpn.VpnSession;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -40,9 +39,6 @@ public class Student implements UserDetails {
 
     @Column(name = "Study_Year")
     private StudyYear studyYear;
-
-    @OneToMany(mappedBy = "student")
-    private List<VpnSession> vpnSessions;
 
     @OneToOne(mappedBy = "student")
     private StudyBuddy studyBuddy;
@@ -103,14 +99,6 @@ public class Student implements UserDetails {
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
-    }
-
-    public List<VpnSession> getVpnSessions() {
-        return vpnSessions;
-    }
-
-    public void setVpnSessions(List<VpnSession> vpnSessions) {
-        this.vpnSessions = vpnSessions;
     }
 
     public StudyBuddy getStudyBuddy() {
