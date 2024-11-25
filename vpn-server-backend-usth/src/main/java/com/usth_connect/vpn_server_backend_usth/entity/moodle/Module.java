@@ -1,5 +1,5 @@
-package com.usth_connect.vpn_server_backend_usth.entity;
-import com.usth_connect.vpn_server_backend_usth.entity.schedule.Schedule;
+package com.usth_connect.vpn_server_backend_usth.entity.moodle;
+import com.usth_connect.vpn_server_backend_usth.entity.Notification;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -18,6 +18,10 @@ public class Module {
 
     @Column(name = "Lecturers")
     private String lecturers;
+
+    @ManyToOne
+    @JoinColumn(name = "course_id")
+    private Course course;
 
     @OneToMany(mappedBy = "module")
     private List<Schedule> schedules;
@@ -71,5 +75,13 @@ public class Module {
 
     public void setResources(List<Resource> resources) {
         this.resources = resources;
+    }
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
     }
 }

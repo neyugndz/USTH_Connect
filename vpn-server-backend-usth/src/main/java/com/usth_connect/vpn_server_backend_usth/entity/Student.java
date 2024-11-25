@@ -3,6 +3,7 @@ package com.usth_connect.vpn_server_backend_usth.entity;
 import com.usth_connect.vpn_server_backend_usth.Enum.Gender;
 import com.usth_connect.vpn_server_backend_usth.Enum.Role;
 import com.usth_connect.vpn_server_backend_usth.Enum.StudyYear;
+import com.usth_connect.vpn_server_backend_usth.entity.moodle.Course;
 import com.usth_connect.vpn_server_backend_usth.entity.studyBuddy.StudyBuddy;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -48,6 +49,9 @@ public class Student implements UserDetails {
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @ManyToMany(mappedBy = "students")
+    private List<Course> courses;
 
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
@@ -164,5 +168,13 @@ public class Student implements UserDetails {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public List<Course> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(List<Course> courses) {
+        this.courses = courses;
     }
 }

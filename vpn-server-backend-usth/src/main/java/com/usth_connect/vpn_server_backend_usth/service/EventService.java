@@ -1,10 +1,10 @@
 package com.usth_connect.vpn_server_backend_usth.service;
 
+import com.usth_connect.vpn_server_backend_usth.entity.Notification;
 import com.usth_connect.vpn_server_backend_usth.entity.Organizer;
 import com.usth_connect.vpn_server_backend_usth.dto.EventDTO;
 import com.usth_connect.vpn_server_backend_usth.entity.MapLocation;
 import com.usth_connect.vpn_server_backend_usth.entity.schedule.Event;
-import com.usth_connect.vpn_server_backend_usth.entity.schedule.Schedule;
 import com.usth_connect.vpn_server_backend_usth.repository.EventRepository;
 import com.usth_connect.vpn_server_backend_usth.repository.MapLocationRepository;
 import com.usth_connect.vpn_server_backend_usth.repository.OrganizerRepository;
@@ -209,13 +209,13 @@ public class EventService {
         return dto;
     }
 
-    public void saveSchedule(com.usth_connect.vpn_server_backend_usth.entity.schedule.Event event, LocalDateTime start, LocalDateTime end) {
-        Schedule schedule = new Schedule();
-        schedule.setModuleName(event.getEventName());
-        schedule.setStartTime(start.toLocalTime());
-        schedule.setEndTime(end.toLocalTime());
-
-        // Save the schedule
-        scheduleRepository.save(schedule);
-    }
+//    public void saveSchedule(com.usth_connect.vpn_server_backend_usth.entity.schedule.Event event, LocalDateTime start, LocalDateTime end) {
+//        Notification.Schedule schedule = new Notification.Schedule();
+//        schedule.setModuleName(event.getEventName());
+//        schedule.setStartTime(start.toLocalTime());
+//        schedule.setEndTime(end.toLocalTime());
+//
+//        // Save the schedule
+//        scheduleRepository.save(schedule);
+//    }
 }

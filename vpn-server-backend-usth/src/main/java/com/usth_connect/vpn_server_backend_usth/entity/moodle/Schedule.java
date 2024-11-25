@@ -1,7 +1,7 @@
-package com.usth_connect.vpn_server_backend_usth.entity.schedule;
+package com.usth_connect.vpn_server_backend_usth.entity.moodle;
 
-import com.usth_connect.vpn_server_backend_usth.entity.Module;
 import jakarta.persistence.*;
+
 import java.time.LocalTime;
 
 @Entity
@@ -13,7 +13,7 @@ public class Schedule {
 
     @ManyToOne
     @JoinColumn(name = "Module_Code")
-    private com.usth_connect.vpn_server_backend_usth.entity.Module module;
+    private com.usth_connect.vpn_server_backend_usth.entity.moodle.Module module;
 
     @Column(name = "Module_Name")
     private String moduleName;
@@ -41,7 +41,7 @@ public class Schedule {
         this.id = id;
     }
 
-    public com.usth_connect.vpn_server_backend_usth.entity.Module getModule() {
+    public com.usth_connect.vpn_server_backend_usth.entity.moodle.Module getModule() {
         return module;
     }
 

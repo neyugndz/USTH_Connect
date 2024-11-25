@@ -1,7 +1,6 @@
-package com.usth_connect.vpn_server_backend_usth.entity;
+package com.usth_connect.vpn_server_backend_usth.entity.moodle;
 
 import jakarta.persistence.*;
-import java.util.List;
 
 @Entity
 @Table(name = "resources")
@@ -13,6 +12,12 @@ public class Resource {
     @ManyToOne
     @JoinColumn(name = "Module_Code")
     private Module module;
+
+    @Column(name = "Resource_Type")
+    private String type;
+
+    @Column(name = "Resource_Name")
+    private String name;
 
     @Column(name = "Lecture_number")
     private Integer lectureNumber;
@@ -33,7 +38,7 @@ public class Resource {
         this.id = id;
     }
 
-    public Module getModule() {
+    public com.usth_connect.vpn_server_backend_usth.entity.moodle.Module getModule() {
         return module;
     }
 
@@ -43,6 +48,14 @@ public class Resource {
 
     public Integer getLectureNumber() {
         return lectureNumber;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public void setLectureNumber(Integer lectureNumber) {
