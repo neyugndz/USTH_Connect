@@ -25,10 +25,6 @@ public class Course {
     @Column(name = "visibility")
     private Boolean visibility;
 
-    // One-to-many relationship with modules
-    @OneToMany(mappedBy = "course")
-    private List<Module> modules;
-
     @ManyToMany
     @JoinTable(
             name = "student_course", // Join table name
@@ -77,14 +73,6 @@ public class Course {
 
     public void setVisibility(Boolean visibility) {
         this.visibility = visibility;
-    }
-
-    public List<Module> getModules() {
-        return modules;
-    }
-
-    public void setModules(List<Module> modules) {
-        this.modules = modules;
     }
 
     public List<Student> getStudents() {

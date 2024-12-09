@@ -3,17 +3,18 @@ package com.usth_connect.vpn_server_backend_usth.entity.moodle;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "activity")
 public class Activity {
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long activityId;
 
-    @ManyToOne
-    @JoinColumn(name = "module_code")
-    private Module module;
+    @Column(name = "course_id")
+    private Long courseId;
 
     @Column(name = "activity_name")
     private String activityName;
@@ -27,6 +28,9 @@ public class Activity {
     @Column(name = "completion_status")
     private String completionStatus;
 
+    @OneToMany(mappedBy = "activity", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Resource> resources = new ArrayList<>();
+
     // Getters and setters
     public Long getActivityId() {
         return activityId;
@@ -36,12 +40,12 @@ public class Activity {
         this.activityId = activityId;
     }
 
-    public Module getModule() {
-        return module;
+    public Long getCourseId() {
+        return courseId;
     }
 
-    public void setModule(Module module) {
-        this.module = module;
+    public void setCourseId(Long courseId) {
+        this.courseId = courseId;
     }
 
     public String getActivityName() {
@@ -74,5 +78,13 @@ public class Activity {
 
     public void setCompletionStatus(String completionStatus) {
         this.completionStatus = completionStatus;
+    }
+
+    public List<Resource> getResources() {
+        return resources;
+    }
+
+    public void setResources(List<Resource> resources) {
+        this.resources = resources;
     }
 }

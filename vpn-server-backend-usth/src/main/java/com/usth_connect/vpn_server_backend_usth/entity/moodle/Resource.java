@@ -7,11 +7,7 @@ import jakarta.persistence.*;
 public class Resource {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-
-    @ManyToOne
-    @JoinColumn(name = "Module_Code")
-    private Module module;
+    private Long id;
 
     @Column(name = "Resource_Type")
     private String type;
@@ -19,35 +15,23 @@ public class Resource {
     @Column(name = "Resource_Name")
     private String name;
 
-    @Column(name = "Lecture_number")
-    private Integer lectureNumber;
+    @Column(name = "course_id")
+    private Long courseId;
 
-    @Column(name = "Reference_slide")
-    private Integer[] referenceSlide;
+    @ManyToOne
+    @JoinColumn(name = "activity_id")
+    private Activity activity;
 
-    @Column(name = "Homework_link")
-    private String[] homeworkLink;
+    @Column(name = "file_url")
+    private String fileUrl;
 
     // Getters and Setters
-
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
-    }
-
-    public com.usth_connect.vpn_server_backend_usth.entity.moodle.Module getModule() {
-        return module;
-    }
-
-    public void setModule(Module module) {
-        this.module = module;
-    }
-
-    public Integer getLectureNumber() {
-        return lectureNumber;
     }
 
     public String getType() {
@@ -58,23 +42,35 @@ public class Resource {
         this.type = type;
     }
 
-    public void setLectureNumber(Integer lectureNumber) {
-        this.lectureNumber = lectureNumber;
+    public String getName() {
+        return name;
     }
 
-    public Integer[] getReferenceSlide() {
-        return referenceSlide;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void setReferenceSlide(Integer[] referenceSlide) {
-        this.referenceSlide = referenceSlide;
+    public Activity getActivity() {
+        return activity;
     }
 
-    public String[] getHomeworkLink() {
-        return homeworkLink;
+    public void setActivity(Activity activity) {
+        this.activity = activity;
     }
 
-    public void setHomeworkLink(String[] homeworkLink) {
-        this.homeworkLink = homeworkLink;
+    public String getFileUrl() {
+        return fileUrl;
+    }
+
+    public void setFileUrl(String fileUrl) {
+        this.fileUrl = fileUrl;
+    }
+
+    public Long getCourseId() {
+        return courseId;
+    }
+
+    public void setCourseId(Long courseId) {
+        this.courseId = courseId;
     }
 }

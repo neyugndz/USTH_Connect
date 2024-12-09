@@ -1,10 +1,8 @@
 package com.usth_connect.vpn_server_backend_usth.entity;
 
-import com.usth_connect.vpn_server_backend_usth.entity.moodle.Module;
 import com.usth_connect.vpn_server_backend_usth.entity.schedule.Event;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 @Entity
 @Table(name = "notifications")

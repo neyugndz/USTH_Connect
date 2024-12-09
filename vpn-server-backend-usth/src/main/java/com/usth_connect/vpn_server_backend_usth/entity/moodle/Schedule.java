@@ -11,13 +11,6 @@ public class Schedule {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne
-    @JoinColumn(name = "Module_Code")
-    private com.usth_connect.vpn_server_backend_usth.entity.moodle.Module module;
-
-    @Column(name = "Module_Name")
-    private String moduleName;
-
     @Column(name = "Start_time")
     private LocalTime startTime;
 
@@ -39,22 +32,6 @@ public class Schedule {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public com.usth_connect.vpn_server_backend_usth.entity.moodle.Module getModule() {
-        return module;
-    }
-
-    public void setModule(Module module) {
-        this.module = module;
-    }
-
-    public String getModuleName() {
-        return moduleName;
-    }
-
-    public void setModuleName(String moduleName) {
-        this.moduleName = moduleName;
     }
 
     public LocalTime getStartTime() {

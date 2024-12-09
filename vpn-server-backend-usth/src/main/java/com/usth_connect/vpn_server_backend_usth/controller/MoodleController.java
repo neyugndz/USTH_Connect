@@ -3,6 +3,7 @@ package com.usth_connect.vpn_server_backend_usth.controller;
 import com.usth_connect.vpn_server_backend_usth.service.MoodleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,13 +16,12 @@ public class MoodleController {
     private MoodleService moodleService;
 
     @GetMapping("/site-info")
-    public Map<String, Object> getSiteInfo(){
+    public Map<String, Object> getSiteInfo() {
         return moodleService.fetchSiteInfo();
     }
 
-    @GetMapping("/courses")
-    public Map<String, Object> getCourses() {
-        return moodleService.fetchCourses();
+    @GetMapping("/courses/{courseId}")
+    public Map<String, Object> getCourses(@PathVariable Long courseId) {
+        return moodleService.fetchCourses(courseId);
     }
-
 }
