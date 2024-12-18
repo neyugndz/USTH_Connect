@@ -37,6 +37,15 @@ public class StudentController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @PatchMapping("/{id}")
+    public ResponseEntity<Student> updateStudentPartially(@PathVariable String id, @RequestBody StudentDTO studentDTO) {
+        Optional<Student> updatedStudent = studentService.updateStudentPartially(id, studentDTO);
+        return updatedStudent
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteStudent(@PathVariable String id) {
         studentService.deleteStudent(id);

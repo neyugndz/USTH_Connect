@@ -6,7 +6,6 @@ import jakarta.persistence.*;
 @Table(name = "resources")
 public class Resource {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "Resource_Type")
@@ -24,6 +23,16 @@ public class Resource {
 
     @Column(name = "file_url")
     private String fileUrl;
+
+    public Resource() {
+    }
+
+    public Resource(Long resourceId, String resourceName, String resourceType, String resourceUrl) {
+        this.id = resourceId;
+        this.name = resourceName;
+        this.type = resourceType;
+        this.fileUrl = resourceUrl;
+    }
 
     // Getters and Setters
     public Long getId() {

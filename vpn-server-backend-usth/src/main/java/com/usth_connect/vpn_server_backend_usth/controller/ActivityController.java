@@ -31,6 +31,21 @@ public class ActivityController {
         }
     }
 
+    // Endpoint to save all activities from all courses
+    @PostMapping("/save-all")
+    public ResponseEntity<List<Activity>> saveAllActivities() {
+        try {
+            List<Activity> activities = activityService.saveAllActivities();  // Call saveAllActivities to save and return the activities
+            if (activities != null && !activities.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.CREATED).body(activities);  // Return the saved activities with status 201 (Created)
+            } else {
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);  // If no activities saved, return 204 (No Content)
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);  // Handle errors with 500 status
+        }
+    }
+
     // Get all activities for a specific course
     @GetMapping("/course/{courseId}")
     public ResponseEntity<List<Activity>> getAllActivities(@PathVariable Long courseId) {
@@ -50,6 +65,5 @@ public class ActivityController {
         Activity activity = activityService.getActivity(activityId, courseId);
         return ResponseEntity.ok(activity);
     }
-
 
 }

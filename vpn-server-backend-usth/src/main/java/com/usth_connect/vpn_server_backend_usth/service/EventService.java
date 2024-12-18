@@ -15,9 +15,11 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Array;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
@@ -209,13 +211,33 @@ public class EventService {
         return dto;
     }
 
-//    public void saveSchedule(com.usth_connect.vpn_server_backend_usth.entity.schedule.Event event, LocalDateTime start, LocalDateTime end) {
-//        Notification.Schedule schedule = new Notification.Schedule();
-//        schedule.setModuleName(event.getEventName());
-//        schedule.setStartTime(start.toLocalTime());
-//        schedule.setEndTime(end.toLocalTime());
-//
-//        // Save the schedule
-//        scheduleRepository.save(schedule);
+    // Map the Calendar with Major and Study Year
+//    public List<String> getCalendarIdsForStudent(String major, String studyYear) {
+//        if("ict".equalsIgnoreCase(major)) {
+//            return switch (studyYear) {
+//                case "B2" -> Arrays.asList("i7p4ol56gi8sqe0dq7uc3m0o4c@group.calendar.google.com");
+//                case "B3" -> Arrays.asList("ict.usthedu@gmail.com");
+//                default -> Arrays.asList("i7p4ol56gi8sqe0dq7uc3m0o4c@group.calendar.google.com");
+//            };
+//        } else if("cs".equalsIgnoreCase(major)) {
+//            return switch (studyYear) {
+//                case "B2" -> Arrays.asList("e65gmijov921l1dbfq2p89ckvo@group.calendar.google.com");
+//                case "B3" -> Arrays.asList("6e1mlnn0diviabrod9kf6dj5dc@group.calendar.google.com");
+//                default -> Arrays.asList("e65gmijov921l1dbfq2p89ckvo@group.calendar.google.com");
+//            };
+//        } else if ("ds".equalsIgnoreCase(major)) {
+//            return switch (studyYear) {
+//                case "B2" -> Arrays.asList("c_nafscvjc69aupft3m9abiujc9k@group.calendar.google.com");
+//                case "B3" -> Arrays.asList("c_c5d8462bf26df40fcc2bdc65b9306c61e8c9a87c521b22812d61f4db9e8090a7@group.calendar.google.com");
+//                default -> Arrays.asList("c_nafscvjc69aupft3m9abiujc9k@group.calendar.google.com");
+//            };
+//        } else {
+//            return Arrays.asList("ict.usthedu@gmail.com");
+//        }
 //    }
+
+    public List<Event> getEventsByOrganizer(Integer organizerId) {
+        return eventRepository.findByOrganizerId(organizerId);
+    }
+
 }

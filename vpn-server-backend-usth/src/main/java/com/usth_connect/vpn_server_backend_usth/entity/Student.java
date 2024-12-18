@@ -20,7 +20,7 @@ public class Student implements UserDetails {
     @Id
     private String id;
 
-    @Column(name = "FullName", nullable = false)
+    @Column(name = "FullName")
     private String fullName;
 
     @Column(name = "Gender")
@@ -52,6 +52,15 @@ public class Student implements UserDetails {
 
     @ManyToMany(mappedBy = "students")
     private List<Course> courses;
+
+    @Column(name = "sip_username")
+    private String sipUsername;
+
+    @Column(name = "sip_password")
+    private String sipPassword;
+
+    @Column(name = "sip_domain")
+    private String sipDomain;
 
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
@@ -177,4 +186,29 @@ public class Student implements UserDetails {
     public void setCourses(List<Course> courses) {
         this.courses = courses;
     }
+
+    public String getSipUsername() {
+        return sipUsername;
+    }
+
+    public void setSipUsername(String sipUsername) {
+        this.sipUsername = sipUsername;
+    }
+
+    public String getSipPassword() {
+        return sipPassword;
+    }
+
+    public void setSipPassword(String sipPassword) {
+        this.sipPassword = sipPassword;
+    }
+
+    public String getSipDomain() {
+        return sipDomain;
+    }
+
+    public void setSipDomain(String sipDomain) {
+        this.sipDomain = sipDomain;
+    }
+
 }

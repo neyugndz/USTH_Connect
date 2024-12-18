@@ -1,7 +1,9 @@
 package com.usth_connect.vpn_server_backend_usth.service;
 
+import com.usth_connect.vpn_server_backend_usth.entity.moodle.Category;
 import com.usth_connect.vpn_server_backend_usth.entity.moodle.Course;
 import com.usth_connect.vpn_server_backend_usth.entity.moodle.Resource;
+import com.usth_connect.vpn_server_backend_usth.repository.CategoryRepository;
 import com.usth_connect.vpn_server_backend_usth.repository.CourseRepository;
 import com.usth_connect.vpn_server_backend_usth.repository.ResourceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,9 @@ public class CourseService {
 
     @Autowired
     private ResourceRepository resourceRepository;
+
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     // Saving basic course info from Moodle Service
     public Course saveCourseFromMoodle(Long courseId) {

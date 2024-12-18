@@ -1,15 +1,15 @@
-package com.usth_connect.vpn_server_backend_usth.service;
+package com.usth_connect.vpn_server_backend_usth.service.scheduler;
 
 import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.model.Event;
-import com.google.api.services.calendar.model.Events;
-import com.google.auto.value.AutoOneOf;
 import com.usth_connect.vpn_server_backend_usth.repository.EventRepository;
+import com.usth_connect.vpn_server_backend_usth.service.EventNotificationService;
+import com.usth_connect.vpn_server_backend_usth.service.EventService;
+import com.usth_connect.vpn_server_backend_usth.service.GoogleCalendarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -37,16 +37,20 @@ public class EventSchedulerService {
         LOGGER.info("Starting Google Calendar sync...");
 
         try {
+
             // Define the calendar IDs to fetch events from
             List<String> calendarIds = Arrays.asList(
-                    "ict.usthedu@gmail.com",
-                    "i7p4ol56gi8sqe0dq7uc3m0o4c@group.calendar.google.com",
-                    "b69a46455e0f40497a09a7bdb1fb4a3651ee872c8371238487159d5b17944e54@group.calendar.google.com"
+                    "ict.usthedu@gmail.com", // B3-ICT
+                    "e65gmijov921l1dbfq2p89ckvo@group.calendar.google.com", // B2-CS
+                    "c_nafscvjc69aupft3m9abiujc9k@group.calendar.google.com", // B2-DS
+                    "i7p4ol56gi8sqe0dq7uc3m0o4c@group.calendar.google.com", // B2-ICT
+                    "6e1mlnn0diviabrod9kf6dj5dc@group.calendar.google.com", // B3-CS
+                    "c_c5d8462bf26df40fcc2bdc65b9306c61e8c9a87c521b22812d61f4db9e8090a7@group.calendar.google.com" // B3-DS
             );
 
             // Get the current time to define the time range
-            DateTime timeMin = googleCalendarService.getStartOfWeek();
-            DateTime timeMax = googleCalendarService.getEndOfWeek();
+            DateTime timeMin = googleCalendarService.getStartOfMonth();
+            DateTime timeMax = googleCalendarService.getEndOfMonth();
 
             LOGGER.info("Fetching events from " + timeMin + " to " + timeMax);
 

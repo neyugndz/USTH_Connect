@@ -16,10 +16,10 @@ public class Event {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer eventId;
 
-    @Column(name = "Event_Name")
+    @Column(name = "Event_Name",  columnDefinition = "TEXT")
     private String eventName;
 
-    @Column(name = "Event_Description")
+    @Column(name = "Event_Description",  columnDefinition = "TEXT")
     private String eventDescription;
 
     @Column(name = "Event_Start")

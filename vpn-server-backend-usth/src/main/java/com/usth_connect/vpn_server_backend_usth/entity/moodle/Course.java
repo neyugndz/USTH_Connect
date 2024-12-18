@@ -9,7 +9,6 @@ import java.util.List;
 @Table(name = "course")
 public class Course {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "course_id")
     private Long courseId;
 
@@ -33,6 +32,17 @@ public class Course {
     )
     private List<Student> students;
 
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Activity> activities;
+
+    public Course(Long courseId, String courseName, String shortName) {
+        this.courseId = courseId;
+        this.fullName = courseName;
+        this.shortName = shortName;
+    }
+
+    public Course() {
+    }
     // Getters and Setters
 
     public Long getCourseId() {
@@ -81,5 +91,13 @@ public class Course {
 
     public void setStudents(List<Student> students) {
         this.students = students;
+    }
+
+    public List<Activity> getActivities() {
+        return activities;
+    }
+
+    public void setActivities(List<Activity> activities) {
+        this.activities = activities;
     }
 }

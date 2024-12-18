@@ -9,7 +9,7 @@ import java.util.List;
 @Entity
 @Table(name = "activity")
 public class Activity {
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     @Id
     private Long activityId;
 
@@ -28,8 +28,23 @@ public class Activity {
     @Column(name = "completion_status")
     private String completionStatus;
 
+    @ManyToOne
+    @JoinColumn(name = "course_id", referencedColumnName = "course_id", nullable = false, insertable = false, updatable = false)
+    private Course course;
+
     @OneToMany(mappedBy = "activity", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Resource> resources = new ArrayList<>();
+
+    public Activity() {
+    }
+
+    public Activity(Long activityId, String activityName, String activityType, Course course) {
+        this.activityId = activityId;
+        this.activityName = activityName;
+        this.activityType = activityType;
+        this.course = course;
+    }
+
 
     // Getters and setters
     public Long getActivityId() {
@@ -86,5 +101,13 @@ public class Activity {
 
     public void setResources(List<Resource> resources) {
         this.resources = resources;
+    }
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
     }
 }
