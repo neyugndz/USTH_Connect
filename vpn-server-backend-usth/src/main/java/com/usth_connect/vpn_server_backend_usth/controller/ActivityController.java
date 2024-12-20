@@ -59,11 +59,4 @@ public class ActivityController {
         return activityService.getResourcesForActivity(activityId, courseId);
     }
 
-    // Endpoint to fetch the activities
-    @GetMapping("/{activityId}/course/{courseId}")
-    public ResponseEntity<Activity> getActivity(@PathVariable Long activityId, @PathVariable Long courseId) {
-        Activity activity = activityService.getActivity(activityId, courseId);
-        return ResponseEntity.ok(activity);
-    }
-
 }

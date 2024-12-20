@@ -45,7 +45,8 @@ public class EventSchedulerService {
                     "c_nafscvjc69aupft3m9abiujc9k@group.calendar.google.com", // B2-DS
                     "i7p4ol56gi8sqe0dq7uc3m0o4c@group.calendar.google.com", // B2-ICT
                     "6e1mlnn0diviabrod9kf6dj5dc@group.calendar.google.com", // B3-CS
-                    "c_c5d8462bf26df40fcc2bdc65b9306c61e8c9a87c521b22812d61f4db9e8090a7@group.calendar.google.com" // B3-DS
+                    "c_c5d8462bf26df40fcc2bdc65b9306c61e8c9a87c521b22812d61f4db9e8090a7@group.calendar.google.com", // B3-DS
+                    "6ed1b9972c99908a3bc9652f827155b424b468fada94e0086e88da1acf78e551@group.calendar.google.com" // Test Endpoint
             );
 
             // Get the current time to define the time range

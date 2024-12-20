@@ -1,5 +1,6 @@
 package com.usth_connect.vpn_server_backend_usth.entity.moodle;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -30,9 +31,11 @@ public class Activity {
 
     @ManyToOne
     @JoinColumn(name = "course_id", referencedColumnName = "course_id", nullable = false, insertable = false, updatable = false)
+    @JsonIgnore
     private Course course;
 
     @OneToMany(mappedBy = "activity", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonIgnore
     private List<Resource> resources = new ArrayList<>();
 
     public Activity() {

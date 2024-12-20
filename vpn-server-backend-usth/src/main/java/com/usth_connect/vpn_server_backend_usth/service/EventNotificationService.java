@@ -1,7 +1,6 @@
 package com.usth_connect.vpn_server_backend_usth.service;
 
 import com.usth_connect.vpn_server_backend_usth.dto.EventDTO;
-import com.usth_connect.vpn_server_backend_usth.entity.MapLocation;
 import com.usth_connect.vpn_server_backend_usth.entity.Notification;
 import com.usth_connect.vpn_server_backend_usth.entity.schedule.Event;
 import com.usth_connect.vpn_server_backend_usth.repository.EventRepository;
@@ -14,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.logging.Logger;
 
 @Service
@@ -33,55 +33,54 @@ public class EventNotificationService {
         // Map the Google event to the DTO
         EventDTO googleEventDTO = mapToEventDTO(googleEvent);
 
-        // Compare oldEvent and newEvent for changes
-        StringBuilder changeMessage = new StringBuilder("The following changes were made to the event: "
-                + googleEventDTO.getEventName() + " ");
+        // Initialize a concise change message
+        StringBuilder changeMessage = new StringBuilder("Event \"" + googleEventDTO.getEventName() + "\" updated: ");
+
+        boolean hasChanges = false;
 
         // Compare event name (summary)
         if (googleEventDTO.getEventName() != null && !googleEventDTO.getEventName().equals(localEvent.getEventName())) {
-            changeMessage.append("Event name changed from '").append(localEvent.getEventName())
-                    .append("' to '").append(googleEventDTO.getEventName()).append("'. ");
+            changeMessage.append("Name -> '").append(googleEventDTO.getEventName()).append("'. ");
+            hasChanges = true;
         }
 
         // Compare event description
         if (googleEventDTO.getEventDescription() != null && !googleEventDTO.getEventDescription().equals(localEvent.getEventDescription())) {
-            changeMessage.append("Event description changed from '")
-                    .append(localEvent.getEventDescription() != null ? localEvent.getEventDescription() : "N/A")
-                    .append("' to '")
-                    .append(googleEventDTO.getEventDescription()).append("'. ");
+            changeMessage.append("Description updated. ");
+            hasChanges = true;
         }
 
         // Compare event start time
         if (googleEventDTO.getEventStart() != null && !googleEventDTO.getEventStart().equals(localEvent.getEventStart())) {
-            changeMessage.append("Event start time changed from '")
-                    .append(localEvent.getEventStart() != null ? localEvent.getEventStart().toString() : "N/A")
-                    .append("' to '")
-                    .append(googleEventDTO.getEventStart()).append("'. ");
+            String formattedStart = formatDateTime(googleEventDTO.getEventStart());
+            changeMessage.append("Starts at -> ").append(formattedStart).append(". ");
+            hasChanges = true;
         }
 
         // Compare event end time
         if (googleEventDTO.getEventEnd() != null && !googleEventDTO.getEventEnd().equals(localEvent.getEventEnd())) {
-            changeMessage.append("Event end time changed from '")
-                    .append(localEvent.getEventEnd() != null ? localEvent.getEventEnd().toString() : "N/A")
-                    .append("' to '")
-                    .append(googleEventDTO.getEventEnd()).append("'. ");
+            String formattedEnd = formatDateTime(googleEventDTO.getEventEnd());
+            changeMessage.append("Ends at -> ").append(formattedEnd).append(". ");
+            hasChanges = true;
         }
 
         // Compare event location
         if (googleEventDTO.getLocationValue() != null && !googleEventDTO.getLocationValue().trim().equals(localEvent.getLocationValue().trim())) {
-            changeMessage.append("Event location changed from '")
-                    .append(localEvent.getLocationValue())
-                    .append("' to '")
-                    .append(googleEventDTO.getLocationValue()).append("'. ");
+            changeMessage.append("Location -> '").append(googleEventDTO.getLocationValue()).append("'. ");
+            hasChanges = true;
         }
 
-        if (!changeMessage.toString().equals("The following changes were made to the event: "
-                + googleEventDTO.getEventName() + " ")) {
+        if (hasChanges) {
             // Create the notification
             Notification notification = new Notification();
-            notification.setMessage(changeMessage.toString());
+            notification.setMessage(changeMessage.toString().trim());
             notification.setCreatedAt(LocalDateTime.now());
             notification.setRead(false);
+
+            // Add organizer information
+            if (localEvent.getOrganizer() != null) {
+                notification.setOrganizer(localEvent.getOrganizer());
+            }
 
             // Save notification
             notificationRepository.save(notification);
@@ -94,6 +93,15 @@ public class EventNotificationService {
         }
     }
 
+    // Format the LocalDateTime to HH:MM DD/MM/YYYY
+    private String formatDateTime(LocalDateTime dateTime) {
+        if (dateTime == null) {
+            return "Unknown Time";
+        }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd/MM/yyyy");
+        return dateTime.format(formatter);
+    }
+
     public EventDTO mapToEventDTO(com.google.api.services.calendar.model.Event googleEvent) {
         EventDTO eventDTO = new EventDTO();
         eventDTO.setEventName(googleEvent.getSummary());
@@ -104,18 +112,6 @@ public class EventNotificationService {
         eventDTO.setLocationValue(googleEvent.getLocation() != null ? googleEvent.getLocation() : "No Location Provided");
         return eventDTO;
     }
-
-//    private MapLocation getMapLocationFromString(String locationName) {
-//        // Check if location exists in the database
-//        return mapLocationRepository.findByLocation(locationName)
-//                .orElseGet(() -> {
-//                    // If not found, create a new MapLocation
-//                    MapLocation newLocation = new MapLocation();
-//                    newLocation.setLocation(locationName);
-//                    mapLocationRepository.save(newLocation);
-//                    return newLocation;
-//                });
-//    }
 
     // Convert from LocalDateTime to Date and Reverse
     private LocalDateTime convertToLocalDateTime(com.google.api.client.util.DateTime googleDateTime) {

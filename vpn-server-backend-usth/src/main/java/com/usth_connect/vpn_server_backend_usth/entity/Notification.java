@@ -24,6 +24,18 @@ public class Notification {
     @Column(name = "Is_Read", nullable = false)
     private Boolean isRead = false;
 
+    @ManyToOne
+    @JoinColumn(name = "Organizer_ID", referencedColumnName = "id")
+    private Organizer organizer;
+
+    public Organizer getOrganizer() {
+        return organizer;
+    }
+
+    public void setOrganizer(Organizer organizer) {
+        this.organizer = organizer;
+    }
+
     public Integer getNotificationId() {
         return notificationId;
     }

@@ -28,4 +28,9 @@ public class NotificationService {
     public void deleteNotification(String id) {
         notificationRepository.deleteById(id);
     }
+
+    // New method to fetch notifications by organizerId
+    public List<Notification> getNotificationsByOrganizerId(Integer organizerId) {
+        return notificationRepository.findByOrganizerId(organizerId);
+    }
 }

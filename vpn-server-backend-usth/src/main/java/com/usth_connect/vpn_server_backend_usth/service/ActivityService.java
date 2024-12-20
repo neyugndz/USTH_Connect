@@ -180,15 +180,18 @@ public class ActivityService {
         return activityRepository.findByCourseId(courseId);
     }
 
-    // Get activity based on id of activity and course from Database
-    public Activity getActivity(Long activityId, Long courseId) {
-        Optional<Activity> activity = activityRepository.findByActivityIdAndCourseId(activityId, courseId);
-        if (activity.isPresent()) {
-            return activity.get();
+    // Get activity based on id of course from Database
+    public List<Activity> getActivity(Long courseId) {
+        // Fetch the list of activities associated with the given courseId
+        List<Activity> activities = activityRepository.findByCourseId(courseId);
+
+        if (activities != null && !activities.isEmpty()) {
+            return activities;
         } else {
-            throw new IllegalArgumentException("Activity not found for ID: " + activityId + " and Course ID: " + courseId);
+            throw new IllegalArgumentException("No activities found for Course ID: " + courseId);
         }
     }
+
 
     // Fetch all the resources from Moodle
     public List<Resource> fetchAllResources() {
