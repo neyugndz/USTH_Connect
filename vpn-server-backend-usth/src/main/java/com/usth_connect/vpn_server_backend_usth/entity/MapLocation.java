@@ -20,6 +20,12 @@ public class MapLocation {
     @Column(name = "location_value", nullable = true)
     private String locationValue;
 
+    @Column(name = "latitude", nullable = true)
+    private Double latitude; // Latitude field
+
+    @Column(name = "longitude", nullable = true)
+    private Double longitude; // Longitude field
+
     @OneToMany(mappedBy = "location")
     @JsonBackReference
     private List<Event> events;
@@ -48,6 +54,22 @@ public class MapLocation {
 
     public void setLocationValue(String locationValue) {
         this.locationValue = locationValue != null ? locationValue.trim() : "No Location Provided";
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
     }
 
     public List<Event> getEvents() {

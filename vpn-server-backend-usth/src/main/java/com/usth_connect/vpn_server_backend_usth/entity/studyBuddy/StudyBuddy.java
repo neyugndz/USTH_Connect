@@ -1,5 +1,6 @@
 package com.usth_connect.vpn_server_backend_usth.entity.studyBuddy;
 
+import com.usth_connect.vpn_server_backend_usth.Enum.*;
 import com.usth_connect.vpn_server_backend_usth.entity.Student;
 import jakarta.persistence.*;
 import java.util.List;
@@ -16,32 +17,43 @@ public class StudyBuddy {
     @JoinColumn(name = "Student_ID")
     private Student student;
 
-    @Column(name = "Descriptions")
-    private String descriptions;
+    @Column(name = "Gender")
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
 
     @Column(name = "Personality")
-    private String personality;
+    @Enumerated(EnumType.STRING)
+    private Personality personality;
 
     @Column(name = "Communication_Style")
-    private String communicationStyle;
+    @Enumerated(EnumType.STRING)
+    private CommunicationStyle communicationStyle;
 
     @Column(name = "Looking_For")
-    private String lookingFor;
+    @Enumerated(EnumType.STRING)
+    private Opponent lookingFor;
 
-    @OneToMany(mappedBy = "studyBuddy")
-    private List<StudyBuddyInterest> interests;
+    @ElementCollection
+    @CollectionTable(name = "study_buddy_interests", joinColumns = @JoinColumn(name = "study_buddy_id"))
+    @Column(name = "interest")
+    private List<Interest> interests;
 
-    @OneToMany(mappedBy = "studyBuddy")
-    private List<StudyBuddyPlaceStudy> preferredPlaces;
+    @ElementCollection
+    @CollectionTable(name = "study_buddy_favorite_subjects", joinColumns = @JoinColumn(name = "study_buddy_id"))
+    @Column(name = "subject")
+    private List<Subject> favoriteSubjects;
 
-    @OneToMany(mappedBy = "studyBuddy")
-    private List<StudyBuddyTimeStudy> preferredTimes;
+    @ElementCollection
+    @CollectionTable(name = "study_buddy_preferred_places", joinColumns = @JoinColumn(name = "study_buddy_id"))
+    @Column(name = "place")
+    private List<StudyPlace> preferredPlaces;
 
-    @OneToMany(mappedBy = "studyBuddy")
-    private List<FavoriteSubject> favoriteSubjects;
+    @ElementCollection
+    @CollectionTable(name = "study_buddy_preferred_times", joinColumns = @JoinColumn(name = "study_buddy_id"))
+    @Column(name = "time")
+    private List<StudyTime> preferredTimes;
 
-    // Getters and Setters
-
+    // Getters and setters
     public String getStudentId() {
         return studentId;
     }
@@ -58,68 +70,84 @@ public class StudyBuddy {
         this.student = student;
     }
 
-    public String getDescriptions() {
-        return descriptions;
+    public Gender getGender() {
+        return gender;
     }
 
-    public void setDescriptions(String descriptions) {
-        this.descriptions = descriptions;
+    public void setGender(Gender gender) {
+        this.gender = gender;
     }
 
-    public String getPersonality() {
+    public Personality getPersonality() {
         return personality;
     }
 
-    public void setPersonality(String personality) {
+    public void setPersonality(Personality personality) {
         this.personality = personality;
     }
 
-    public String getCommunicationStyle() {
+    public CommunicationStyle getCommunicationStyle() {
         return communicationStyle;
     }
 
-    public void setCommunicationStyle(String communicationStyle) {
+    public void setCommunicationStyle(CommunicationStyle communicationStyle) {
         this.communicationStyle = communicationStyle;
     }
 
-    public String getLookingFor() {
+    public Opponent getLookingFor() {
         return lookingFor;
     }
 
-    public void setLookingFor(String lookingFor) {
+    public void setLookingFor(Opponent lookingFor) {
         this.lookingFor = lookingFor;
     }
 
-    public List<StudyBuddyInterest> getInterests() {
+    public List<Interest> getInterests() {
         return interests;
     }
 
-    public void setInterests(List<StudyBuddyInterest> interests) {
+    public void setInterests(List<Interest> interests) {
         this.interests = interests;
     }
 
-    public List<StudyBuddyPlaceStudy> getPreferredPlaces() {
-        return preferredPlaces;
-    }
-
-    public void setPreferredPlaces(List<StudyBuddyPlaceStudy> preferredPlaces) {
-        this.preferredPlaces = preferredPlaces;
-    }
-
-    public List<StudyBuddyTimeStudy> getPreferredTimes() {
-        return preferredTimes;
-    }
-
-    public void setPreferredTimes(List<StudyBuddyTimeStudy> preferredTimes) {
-        this.preferredTimes = preferredTimes;
-    }
-
-    public List<FavoriteSubject> getFavoriteSubjects() {
+    public List<Subject> getFavoriteSubjects() {
         return favoriteSubjects;
     }
 
-    public void setFavoriteSubjects(List<FavoriteSubject> favoriteSubjects) {
+    public void setFavoriteSubjects(List<Subject> favoriteSubjects) {
         this.favoriteSubjects = favoriteSubjects;
+    }
+
+    public List<StudyPlace> getPreferredPlaces() {
+        return preferredPlaces;
+    }
+
+    public void setPreferredPlaces(List<StudyPlace> preferredPlaces) {
+        this.preferredPlaces = preferredPlaces;
+    }
+
+    public List<StudyTime> getPreferredTimes() {
+        return preferredTimes;
+    }
+
+    public void setPreferredTimes(List<StudyTime> preferredTimes) {
+        this.preferredTimes = preferredTimes;
+    }
+
+    @Override
+    public String toString() {
+        return "StudyBuddy{" +
+                "studentId='" + studentId + '\'' +
+                ", student=" + student +
+                ", gender=" + gender +
+                ", personality=" + personality +
+                ", communicationStyle=" + communicationStyle +
+                ", lookingFor=" + lookingFor +
+                ", interests=" + interests +
+                ", favoriteSubjects=" + favoriteSubjects +
+                ", preferredPlaces=" + preferredPlaces +
+                ", preferredTimes=" + preferredTimes +
+                '}';
     }
 }
 
