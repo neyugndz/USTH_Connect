@@ -71,11 +71,11 @@ public class EventSchedulerService {
 
                     // Update the existing event with new data
                     eventService.saveOrUpdateEvent(googleEvent);
-                    LOGGER.info("Updated Event ID: " + googleEvent.getId());
+//                    LOGGER.info("Updated Event ID: " + googleEvent.getId());
                 } else {
                     // If not exist, create a new one
                     eventService.saveOrUpdateEvent(googleEvent);
-                    LOGGER.info("Created new Event ID: "+ googleEvent.getId());
+//                    LOGGER.info("Created new Event ID: "+ googleEvent.getId());
                 }
 
                 savedEventsCount++;

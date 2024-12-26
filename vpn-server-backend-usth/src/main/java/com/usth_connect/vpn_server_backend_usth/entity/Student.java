@@ -1,5 +1,6 @@
 package com.usth_connect.vpn_server_backend_usth.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.usth_connect.vpn_server_backend_usth.Enum.Gender;
 import com.usth_connect.vpn_server_backend_usth.Enum.Role;
 import com.usth_connect.vpn_server_backend_usth.Enum.StudyYear;
@@ -41,6 +42,8 @@ public class Student implements UserDetails {
     @Column(name = "Study_Year")
     private StudyYear studyYear;
 
+    // Refer to the student field in the StudyBuddy
+    @JsonManagedReference
     @OneToOne(mappedBy = "student")
     private StudyBuddy studyBuddy;
 
@@ -61,6 +64,7 @@ public class Student implements UserDetails {
 
     @Column(name = "sip_domain")
     private String sipDomain;
+
 
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
@@ -210,5 +214,4 @@ public class Student implements UserDetails {
     public void setSipDomain(String sipDomain) {
         this.sipDomain = sipDomain;
     }
-
 }

@@ -53,7 +53,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         // Extract token from authHeader (As Bearer has 6 letters)
         jwt = authHeader.substring(7);
-        studentId = jwtService.extractStudentId(jwt); // todo extract the studentId from JWT token;
+        studentId = jwtService.extractStudentId(jwt);
 
         if (studentId != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(studentId);

@@ -27,8 +27,8 @@ public class SecurityConfig {
         http
                 .csrf().disable()
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/v1/auth/register").hasRole("ADMIN") // Only ADMIN can register
-                        .requestMatchers("/api/v1/auth/admin/register").hasRole("ADMIN") // Only ADMIN can access /admin/register
+                        .requestMatchers("/api/v1/auth/register").hasAuthority("ADMIN") // Only ADMIN can register
+                        .requestMatchers("/api/v1/auth/admin/register").hasAuthority("ADMIN") // Only ADMIN can access /admin/register
                         .requestMatchers("/api/v1/auth/authenticate").permitAll()
                         .anyRequest().authenticated()
                 )

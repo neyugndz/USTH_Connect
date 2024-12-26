@@ -20,8 +20,8 @@ public class NotificationController {
     }
 
     @GetMapping("/organizer")
-    public List<Notification> getNotificationsByOrganizerId(@RequestParam Integer organizerId) {
-        return notificationService.getNotificationsByOrganizerId(organizerId);
+    public List<Notification> getNotificationsByOrganizerId(@RequestParam String studyYear, String major) {
+        return notificationService.getNotificationsByOrganizerDetails(studyYear, major);
     }
 
 }

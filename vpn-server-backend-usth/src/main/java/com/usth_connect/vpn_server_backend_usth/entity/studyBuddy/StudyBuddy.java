@@ -1,57 +1,58 @@
 package com.usth_connect.vpn_server_backend_usth.entity.studyBuddy;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.usth_connect.vpn_server_backend_usth.Enum.*;
 import com.usth_connect.vpn_server_backend_usth.entity.Student;
 import jakarta.persistence.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "study_buddy")
 public class StudyBuddy {
     @Id
-    @Column(name = "Student_ID")
+    @Column(name = "studentId")
     private String studentId;
 
-    @OneToOne
-    @MapsId
-    @JoinColumn(name = "Student_ID")
+    @Column(name = "name")
+    private String name;
+
+    @JsonBackReference
+    @OneToOne(fetch = FetchType.LAZY)  // Lazy load the Student entity
+    @JoinColumn(name = "studentId", insertable = false, updatable = false)
     private Student student;
 
     @Column(name = "Gender")
-    @Enumerated(EnumType.STRING)
-    private Gender gender;
+    private String gender;
 
     @Column(name = "Personality")
-    @Enumerated(EnumType.STRING)
-    private Personality personality;
+    private String personality;
 
     @Column(name = "Communication_Style")
-    @Enumerated(EnumType.STRING)
-    private CommunicationStyle communicationStyle;
+    private String communicationStyle;
 
     @Column(name = "Looking_For")
-    @Enumerated(EnumType.STRING)
-    private Opponent lookingFor;
+    private String lookingFor;
 
     @ElementCollection
     @CollectionTable(name = "study_buddy_interests", joinColumns = @JoinColumn(name = "study_buddy_id"))
     @Column(name = "interest")
-    private List<Interest> interests;
+    private List<String> interests;
 
     @ElementCollection
     @CollectionTable(name = "study_buddy_favorite_subjects", joinColumns = @JoinColumn(name = "study_buddy_id"))
     @Column(name = "subject")
-    private List<Subject> favoriteSubjects;
+    private List<String> favoriteSubjects;
 
     @ElementCollection
     @CollectionTable(name = "study_buddy_preferred_places", joinColumns = @JoinColumn(name = "study_buddy_id"))
     @Column(name = "place")
-    private List<StudyPlace> preferredPlaces;
+    private List<String> preferredPlaces;
 
     @ElementCollection
     @CollectionTable(name = "study_buddy_preferred_times", joinColumns = @JoinColumn(name = "study_buddy_id"))
     @Column(name = "time")
-    private List<StudyTime> preferredTimes;
+    private List<String> preferredTimes;
 
     // Getters and setters
     public String getStudentId() {
@@ -70,75 +71,90 @@ public class StudyBuddy {
         this.student = student;
     }
 
-    public Gender getGender() {
-        return gender;
+    public String getName() {
+        return name;
     }
 
-    public void setGender(Gender gender) {
-        this.gender = gender;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public Personality getPersonality() {
-        return personality;
-    }
-
-    public void setPersonality(Personality personality) {
-        this.personality = personality;
-    }
-
-    public CommunicationStyle getCommunicationStyle() {
-        return communicationStyle;
-    }
-
-    public void setCommunicationStyle(CommunicationStyle communicationStyle) {
-        this.communicationStyle = communicationStyle;
-    }
-
-    public Opponent getLookingFor() {
-        return lookingFor;
-    }
-
-    public void setLookingFor(Opponent lookingFor) {
-        this.lookingFor = lookingFor;
-    }
-
-    public List<Interest> getInterests() {
-        return interests;
-    }
-
-    public void setInterests(List<Interest> interests) {
-        this.interests = interests;
-    }
-
-    public List<Subject> getFavoriteSubjects() {
-        return favoriteSubjects;
-    }
-
-    public void setFavoriteSubjects(List<Subject> favoriteSubjects) {
-        this.favoriteSubjects = favoriteSubjects;
-    }
-
-    public List<StudyPlace> getPreferredPlaces() {
-        return preferredPlaces;
-    }
-
-    public void setPreferredPlaces(List<StudyPlace> preferredPlaces) {
-        this.preferredPlaces = preferredPlaces;
-    }
-
-    public List<StudyTime> getPreferredTimes() {
+    public List<String> getPreferredTimes() {
         return preferredTimes;
     }
 
     public void setPreferredTimes(List<StudyTime> preferredTimes) {
-        this.preferredTimes = preferredTimes;
+        this.preferredTimes = preferredTimes.stream()
+                .map(StudyTime::getDisplayValue)  // Convert to display value
+                .collect(Collectors.toList());
+    }
+
+    public List<String> getPreferredPlaces() {
+        return preferredPlaces;
+    }
+
+    public void setPreferredPlaces(List<StudyPlace> preferredPlaces) {
+        this.preferredPlaces = preferredPlaces.stream()
+                .map(StudyPlace::getDisplayValue)  // Convert to display value
+                .collect(Collectors.toList());
+    }
+
+    public List<String> getFavoriteSubjects() {
+        return favoriteSubjects;
+    }
+
+    public void setFavoriteSubjects(List<Subject> favoriteSubjects) {
+        this.favoriteSubjects = favoriteSubjects.stream()
+                .map(Subject::getDisplayValue)  // Convert to display value
+                .collect(Collectors.toList());
+    }
+
+    public List<String> getInterests() {
+        return interests;
+    }
+
+    public void setInterests(List<Interest> interests) {
+        this.interests = interests.stream()
+                .map(Interest::getDisplayValue)  // Convert to display value
+                .collect(Collectors.toList());
+    }
+
+    public String getLookingFor() {
+        return lookingFor;
+    }
+
+    public void setLookingFor(Opponent lookingFor) {
+        this.lookingFor = lookingFor.getDisplayValue();
+    }
+
+    public String getCommunicationStyle() {
+        return communicationStyle;
+    }
+
+    public void setCommunicationStyle(CommunicationStyle communicationStyle) {
+        this.communicationStyle = communicationStyle.getDisplayValue();
+    }
+
+    public String getPersonality() {
+        return personality;
+    }
+
+    public void setPersonality(String personality) {
+        this.personality = personality;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender.getDisplayValue();
     }
 
     @Override
     public String toString() {
         return "StudyBuddy{" +
                 "studentId='" + studentId + '\'' +
-                ", student=" + student +
                 ", gender=" + gender +
                 ", personality=" + personality +
                 ", communicationStyle=" + communicationStyle +

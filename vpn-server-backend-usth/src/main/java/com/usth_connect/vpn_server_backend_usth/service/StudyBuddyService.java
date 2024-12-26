@@ -6,8 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.logging.Logger;
+
 @Service
 public class StudyBuddyService {
+    private final Logger LOGGER = Logger.getLogger(StudyBuddyService.class.getName());
 
     @Autowired
     private StudyBuddyRepository studyBuddyRepository;

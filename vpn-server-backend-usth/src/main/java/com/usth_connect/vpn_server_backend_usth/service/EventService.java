@@ -34,6 +34,9 @@ public class EventService {
     private ScheduleRepository scheduleRepository;
 
     @Autowired
+    private OrganizerService organizerService;
+
+    @Autowired
     private MapLocationRepository mapLocationRepository;
 
     @PersistenceContext
@@ -211,32 +214,12 @@ public class EventService {
         return dto;
     }
 
-    // Map the Calendar with Major and Study Year
-//    public List<String> getCalendarIdsForStudent(String major, String studyYear) {
-//        if("ict".equalsIgnoreCase(major)) {
-//            return switch (studyYear) {
-//                case "B2" -> Arrays.asList("i7p4ol56gi8sqe0dq7uc3m0o4c@group.calendar.google.com");
-//                case "B3" -> Arrays.asList("ict.usthedu@gmail.com");
-//                default -> Arrays.asList("i7p4ol56gi8sqe0dq7uc3m0o4c@group.calendar.google.com");
-//            };
-//        } else if("cs".equalsIgnoreCase(major)) {
-//            return switch (studyYear) {
-//                case "B2" -> Arrays.asList("e65gmijov921l1dbfq2p89ckvo@group.calendar.google.com");
-//                case "B3" -> Arrays.asList("6e1mlnn0diviabrod9kf6dj5dc@group.calendar.google.com");
-//                default -> Arrays.asList("e65gmijov921l1dbfq2p89ckvo@group.calendar.google.com");
-//            };
-//        } else if ("ds".equalsIgnoreCase(major)) {
-//            return switch (studyYear) {
-//                case "B2" -> Arrays.asList("c_nafscvjc69aupft3m9abiujc9k@group.calendar.google.com");
-//                case "B3" -> Arrays.asList("c_c5d8462bf26df40fcc2bdc65b9306c61e8c9a87c521b22812d61f4db9e8090a7@group.calendar.google.com");
-//                default -> Arrays.asList("c_nafscvjc69aupft3m9abiujc9k@group.calendar.google.com");
-//            };
-//        } else {
-//            return Arrays.asList("ict.usthedu@gmail.com");
-//        }
-//    }
 
-    public List<Event> getEventsByOrganizer(Integer organizerId) {
+
+
+    public List<Event> getEventsByOrganizer(String studyYear, String major) {
+        int organizerId = organizerService.calculateOrganizerId(studyYear, major);
+
         return eventRepository.findByOrganizerId(organizerId);
     }
 

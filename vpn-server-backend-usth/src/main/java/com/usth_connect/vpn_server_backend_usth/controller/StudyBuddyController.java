@@ -1,7 +1,9 @@
 package com.usth_connect.vpn_server_backend_usth.controller;
 
 
+import com.usth_connect.vpn_server_backend_usth.entity.Student;
 import com.usth_connect.vpn_server_backend_usth.entity.studyBuddy.StudyBuddy;
+import com.usth_connect.vpn_server_backend_usth.repository.StudentRepository;
 import com.usth_connect.vpn_server_backend_usth.service.MoodleService;
 import com.usth_connect.vpn_server_backend_usth.service.StudyBuddyService;
 
@@ -22,11 +24,16 @@ public class StudyBuddyController {
     @Autowired
     private StudyBuddyService studyBuddyService;
 
+    @Autowired
+    private StudentRepository studentRepository;
+
     // Endpoint to save StudyBuddy from the FE
     @PostMapping("/save")
     public ResponseEntity<StudyBuddy> saveStudyBuddy(@RequestBody StudyBuddy studyBuddy) {
         LOGGER.info("Received Body: " + studyBuddy);
+
         StudyBuddy studyBuddy1 = studyBuddyService.save(studyBuddy);
+        LOGGER.info("Saved StudyBuddy: " + studyBuddy1);
         return ResponseEntity.ok(studyBuddy1);
     }
 }

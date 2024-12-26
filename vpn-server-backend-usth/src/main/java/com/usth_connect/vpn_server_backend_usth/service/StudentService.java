@@ -1,20 +1,28 @@
 package com.usth_connect.vpn_server_backend_usth.service;
 
+import com.usth_connect.vpn_server_backend_usth.config.JwtService;
 import com.usth_connect.vpn_server_backend_usth.dto.StudentDTO;
+import com.usth_connect.vpn_server_backend_usth.dto.StudentSIPDTO;
 import com.usth_connect.vpn_server_backend_usth.entity.Student;
 import com.usth_connect.vpn_server_backend_usth.repository.StudentRepository;
+import org.bouncycastle.pqc.jcajce.provider.rainbow.BCRainbowPrivateKey;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class StudentService {
 
     @Autowired
     private StudentRepository studentRepository;
+
+    @Autowired
+    private JwtService jwtService;
+
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public List<StudentDTO> getAllStudents() {
         return studentRepository.findAll()
@@ -73,5 +81,51 @@ public class StudentService {
 
     public void deleteStudent(String id) {
         studentRepository.deleteById(id);
+    }
+
+    public Optional<Student> updateStudentSIP(String id, StudentSIPDTO studentSIPDTO) {
+        return studentRepository.findById(id).map(existingStudent -> {
+            existingStudent.setSipUsername(studentSIPDTO.getSipUsername());
+
+            String encryptedPassword = bCryptPasswordEncoder.encode(studentSIPDTO.getSipPassword());
+            existingStudent.setSipPassword(encryptedPassword);
+            return studentRepository.save(existingStudent);
+        });
+    }
+
+    // Method to retrieve SIP credential through token
+    public Map<String, String> getSipCredentials(String token) {
+        // Extract the studentid from the token
+        String studentId = jwtService.extractStudentId(token);
+
+        if(studentId == null) {
+            return null;
+        }
+
+        // Retrieve the user from the database
+        Optional<Student> studentOptional = studentRepository.findById(studentId);
+
+        if(studentOptional.isPresent()) {
+            Student student = studentOptional.get();
+
+            // Prepare the response mapping
+            Map<String, String> sipCredentials = new HashMap<>();
+            sipCredentials.put("sip_username", student.getSipUsername());
+            sipCredentials.put("sip_password", "[ENCRYPTED]");
+
+            return sipCredentials;
+        } else {
+            return null;
+        }
+    }
+
+    // Method to check the register status of the student account
+    public boolean checkSipRegistrationStatus(String studentId) {
+        Optional<Student> studentOptional = studentRepository.findById(studentId);
+        if (studentOptional.isPresent()) {
+            Student student = studentOptional.get();
+            return student.getSipUsername() != null && student.getSipPassword() != null;
+        }
+        return false;
     }
 }

@@ -1,7 +1,6 @@
 package com.usth_connect.vpn_server_backend_usth.controller;
 
-import com.usth_connect.vpn_server_backend_usth.entity.MapLocation;
-import com.usth_connect.vpn_server_backend_usth.service.OpenStreetMapService;
+import com.usth_connect.vpn_server_backend_usth.service.MapboxGeocodingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,12 +10,12 @@ import org.springframework.web.bind.annotation.*;
 public class GeocodingController {
 
     @Autowired
-    private OpenStreetMapService openStreetMapService;
+    private MapboxGeocodingService mapboxGeocodingService;
 
     // Endpoint to get coordinates for the given address
     @GetMapping("/get-coordinates")
     public ResponseEntity<String> getCoordinates(@RequestParam String address) {
-            String location = openStreetMapService.getCoordinatesFromAddress(address);
+            String location = mapboxGeocodingService.getCoordinatesFromAddress(address);
             return ResponseEntity.ok(location);
     }
 
@@ -25,7 +24,7 @@ public class GeocodingController {
     public ResponseEntity<String> saveLocation(@RequestParam String address) {
         try {
             // Get coordinates for the address
-            String locationResult = openStreetMapService.getCoordinatesFromAddress(address);
+            String locationResult = mapboxGeocodingService.getCoordinatesFromAddress(address);
 
             if (locationResult.contains("Latitude")) {
                 // Extract latitude and longitude from the result
@@ -36,7 +35,7 @@ public class GeocodingController {
                 Double latitude = Double.parseDouble(latitudeStr);
                 Double longitude = Double.parseDouble(longitudeStr);
 
-                openStreetMapService.saveLocation(address, latitude, longitude);
+                mapboxGeocodingService.saveLocation(address, latitude, longitude);
 
                 return ResponseEntity.ok("Location saved successfully!");
             } else {

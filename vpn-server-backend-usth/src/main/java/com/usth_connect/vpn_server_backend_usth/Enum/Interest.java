@@ -1,5 +1,8 @@
 package com.usth_connect.vpn_server_backend_usth.Enum;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public enum Interest {
     V_POP("V-pop"),
     K_POP("K-pop"),
@@ -52,8 +55,19 @@ public enum Interest {
         this.displayValue = displayValue;
     }
 
+    @JsonValue
     public String getDisplayValue() {
         return displayValue;
+    }
+
+    @JsonCreator
+    public static Interest fromDisplayValue(String displayValue) {
+        for (Interest interest : Interest.values()) {
+            if (interest.getDisplayValue().equalsIgnoreCase(displayValue)) {
+                return interest;
+            }
+        }
+        throw new IllegalArgumentException("Unknown display value: " + displayValue);
     }
 }
 

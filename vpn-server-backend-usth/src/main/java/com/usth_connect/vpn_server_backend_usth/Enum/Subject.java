@@ -1,5 +1,8 @@
 package com.usth_connect.vpn_server_backend_usth.Enum;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public enum Subject {
     CALCULUS("Calculus"),
     LINEAR_ALGEBRA("Linear Algebra"),
@@ -19,7 +22,18 @@ public enum Subject {
         this.displayValue = displayValue;
     }
 
+    @JsonValue
     public String getDisplayValue() {
         return displayValue;
+    }
+
+    @JsonCreator
+    public static Subject fromDisplayValue(String displayValue) {
+        for (Subject subject : Subject.values()) {
+            if (subject.getDisplayValue().equalsIgnoreCase(displayValue)) {
+                return subject;
+            }
+        }
+        throw new IllegalArgumentException("Unknown display value: " + displayValue);
     }
 }
