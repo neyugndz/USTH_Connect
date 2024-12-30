@@ -62,6 +62,9 @@ public enum Interest {
 
     @JsonCreator
     public static Interest fromDisplayValue(String displayValue) {
+        if (displayValue != null) {
+            displayValue = displayValue.trim(); // Trim any extra spaces
+        }
         for (Interest interest : Interest.values()) {
             if (interest.getDisplayValue().equalsIgnoreCase(displayValue)) {
                 return interest;

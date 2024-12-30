@@ -111,7 +111,7 @@ public class StudentService {
             // Prepare the response mapping
             Map<String, String> sipCredentials = new HashMap<>();
             sipCredentials.put("sip_username", student.getSipUsername());
-            sipCredentials.put("sip_password", "[ENCRYPTED]");
+            sipCredentials.put("sip_password", student.getSipPassword());
 
             return sipCredentials;
         } else {

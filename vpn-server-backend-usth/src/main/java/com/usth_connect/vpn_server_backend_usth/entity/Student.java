@@ -100,6 +100,10 @@ public class Student implements UserDetails {
 
     public void setMajor(String major) {
         this.major = major;
+        // Update the associated StudyBuddy entity
+        if (studyBuddy != null) {
+            studyBuddy.setMajor(major);
+        }
     }
 
     public Gender getGender() {

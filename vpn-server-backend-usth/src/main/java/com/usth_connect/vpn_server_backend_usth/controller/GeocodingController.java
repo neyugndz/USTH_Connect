@@ -1,5 +1,6 @@
 package com.usth_connect.vpn_server_backend_usth.controller;
 
+import com.usth_connect.vpn_server_backend_usth.dto.CoordinatesDTO;
 import com.usth_connect.vpn_server_backend_usth.service.MapboxGeocodingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -44,6 +45,17 @@ public class GeocodingController {
         } catch (Exception e) {
             return ResponseEntity.status(500).body("An error occurred while saving the location: " + e.getMessage());
         }
+    }
+
+    // Endpoint to fetch coordinates for given location from the database
+    @GetMapping("/get-coordinates-from-db")
+    public ResponseEntity<CoordinatesDTO> getCoordinatesFromDb(@RequestParam String location) {
+        // Call the service to fetch coordinates from the db
+        CoordinatesDTO coordinatesDTO = mapboxGeocodingService.getCoordinatesFromDatabase(location);
+        if(coordinatesDTO == null ) {
+            return ResponseEntity.status(404).body(null);
+        }
+        return ResponseEntity.ok(coordinatesDTO);
     }
 
 }

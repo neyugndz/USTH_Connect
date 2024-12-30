@@ -1,6 +1,8 @@
 package com.usth_connect.vpn_server_backend_usth.entity.studyBuddy;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.usth_connect.vpn_server_backend_usth.Enum.*;
 import com.usth_connect.vpn_server_backend_usth.entity.Student;
 import jakarta.persistence.*;
@@ -9,6 +11,7 @@ import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "study_buddy")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class StudyBuddy {
     @Id
     @Column(name = "studentId")
@@ -24,6 +27,9 @@ public class StudyBuddy {
 
     @Column(name = "Gender")
     private String gender;
+
+    @Column(name = "Major")
+    private String major;
 
     @Column(name = "Personality")
     private String personality;
@@ -151,6 +157,20 @@ public class StudyBuddy {
         this.gender = gender.getDisplayValue();
     }
 
+    public String getMajor() {
+        return major;
+    }
+
+    public void setMajor(String major) {
+        this.major = major;
+    }
+
+    @PreUpdate
+    private void syncMajorWithStudent() {
+        if (student != null) {
+            this.major = student.getMajor();
+        }
+    }
     @Override
     public String toString() {
         return "StudyBuddy{" +

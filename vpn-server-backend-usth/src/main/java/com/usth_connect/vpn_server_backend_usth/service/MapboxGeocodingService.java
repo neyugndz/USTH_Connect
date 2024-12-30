@@ -1,5 +1,6 @@
 package com.usth_connect.vpn_server_backend_usth.service;
 
+import com.usth_connect.vpn_server_backend_usth.dto.CoordinatesDTO;
 import com.usth_connect.vpn_server_backend_usth.entity.MapLocation;
 import com.usth_connect.vpn_server_backend_usth.repository.MapLocationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 @Service
 public class MapboxGeocodingService {
@@ -35,10 +38,6 @@ public class MapboxGeocodingService {
             String encodedAddress = URLEncoder.encode(address, StandardCharsets.UTF_8.toString());
             LOGGER.info("Encoded address: " + encodedAddress);
 
-//            String url = UriComponentsBuilder.fromHttpUrl(NOMINATIM_URL)
-//                    .queryParam("q", encodedAddress) // Pass the encoded address
-//                    .queryParam("format", "json")
-//                    .toUriString();
             URI uri = UriComponentsBuilder.fromHttpUrl(MAPBOX_URL + "/" + encodedAddress + ".json")
                     .queryParam("access_token", accessToken) // Use the injected token
                     .queryParam("limit", 1) // Limit results to the most relevant
@@ -68,17 +67,30 @@ public class MapboxGeocodingService {
         } catch (Exception e) {
             return "An error occurred while fetching coordinates: " + e.getMessage();
         }
-//            if (jsonResponse.isArray() && jsonResponse.size() > 0) {
-//                JsonNode firstResult = jsonResponse.get(0);
-//                String lat = firstResult.get("lat").asText();
-//                String lon = firstResult.get("lon").asText();
-//                return "Latitude: " + lat + ", Longitude: " + lon;
-//            } else {
-//                return "No results found for the given address.";
-//            }
-//        } catch (Exception e) {
-//            return "An error occurred while fetching coordinates: " + e.getMessage();
-//        }
+    }
+
+    // Fetch latitude and longitude from the database using partial matching
+    public CoordinatesDTO getCoordinatesFromDatabase(String location) {
+        try {
+            location = location.trim();
+            LOGGER.info("Querying for location: " + location);
+
+            List<MapLocation> mapLocations = mapLocationRepository.findByLocationContaining(location);
+
+            if (mapLocations.isEmpty()) {
+                return null; // No matching location found
+            } else if (mapLocations.size() == 1) {
+                MapLocation mapLocation = mapLocations.get(0);
+                return new CoordinatesDTO(mapLocation.getLatitude(), mapLocation.getLongitude());
+            } else {
+                // If multiple locations are found, you may return the first one or handle it differently
+                MapLocation mapLocation = mapLocations.get(0); // Example: return the first match
+                return new CoordinatesDTO(mapLocation.getLatitude(), mapLocation.getLongitude());
+            }
+        } catch (Exception e) {
+            LOGGER.severe("Error while fetching location: " + e.getMessage());
+            return null;
+        }
     }
 
     // Method to save address to the database

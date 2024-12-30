@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
@@ -17,10 +19,14 @@ public class AuthenticationController {
     private AuthenticationService service;
 
     @PostMapping("/register")
-    public ResponseEntity<AuthenticationResponse> register(
-            @RequestBody RegisterRequest request
+    public ResponseEntity<List<AuthenticationResponse>> register(
+            @RequestBody List<RegisterRequest>  requests
     ) {
-        return ResponseEntity.ok(service.register(request, false));
+        List<AuthenticationResponse> responses = requests.stream()
+                .map(request -> service.register(request, false))
+                .toList();
+        return ResponseEntity.ok(responses);
+//        return ResponseEntity.ok(service.register(request, false));
     }
 
     @PostMapping("/admin/register")
